@@ -5,12 +5,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -28,7 +28,7 @@ public class InputTextParserTest {
 
         //then
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Input text cannot be null or empty value");
+        expectedException.expectMessage("Input text cannot be empty");
 
         //when
         inputTextParser.mapWordsToLetters(inputText);
@@ -41,7 +41,7 @@ public class InputTextParserTest {
 
         //then
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Input text cannot be null or empty value");
+        expectedException.expectMessage("Input text cannot be empty");
 
         //when
         inputTextParser.mapWordsToLetters(inputText);
@@ -51,6 +51,18 @@ public class InputTextParserTest {
     public void whenMapWordsToLetters_givenOnlySpecialSings_thenReturnEmptyStructure() {
         //given
         String text = " ,,,,.$%^&* ^&#&%^><<? *.*.*.*";
+
+        //when
+        Map<Character, TreeSet<String>> resultStructure = inputTextParser.mapWordsToLetters(text);
+
+        //then
+        then(resultStructure).hasSize(0);
+    }
+
+    @Test
+    public void whenMapWordsToLetters_givenOnlyWhiteSpace_thenReturnEmptyStructure() {
+        //given
+        String text = "                         ";
 
         //when
         Map<Character, TreeSet<String>> resultStructure = inputTextParser.mapWordsToLetters(text);
@@ -72,8 +84,8 @@ public class InputTextParserTest {
         List<String> aWords = new ArrayList<>(resultStructure.get('a'));
         List<String> lWords = new ArrayList<>(resultStructure.get('l'));
         then(resultStructure.keySet()).containsSequence('a', 'l');
-        then(aWords).isEqualTo(Collections.singletonList("ala"));
-        then(lWords).isEqualTo(Collections.singletonList("ala"));
+        then(aWords).isEqualTo(singletonList("ala"));
+        then(lWords).isEqualTo(singletonList("ala"));
     }
 
     @Test
@@ -92,10 +104,10 @@ public class InputTextParserTest {
         List<String> cWords = new ArrayList<>(resultStructure.get('c'));
 
         then(resultStructure.keySet()).containsSequence('a', 'c', 'd', 'e', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o');
-        then(jWords).isEqualTo(Collections.singletonList("john"));
-        then(dWords).isEqualTo(Collections.singletonList("doe123"));
-        then(gWords).isEqualTo(Collections.singletonList("gmail"));
-        then(cWords).isEqualTo(Collections.singletonList("com"));
+        then(jWords).isEqualTo(singletonList("john"));
+        then(dWords).isEqualTo(singletonList("doe123"));
+        then(gWords).isEqualTo(singletonList("gmail"));
+        then(cWords).isEqualTo(singletonList("com"));
     }
 
     @Test
@@ -114,10 +126,10 @@ public class InputTextParserTest {
         List<String> oKeyWords = new ArrayList<>(resultStructure.get('o'));
 
         then(resultStructure.keySet()).containsSequence('h', 'j', 'n', 'o');
-        then(hKeyWords).isEqualTo(Arrays.asList("123john", "john"));
-        then(cKeyWords).isEqualTo(Arrays.asList("123john", "john"));
-        then(dKeyWords).isEqualTo(Arrays.asList("123john", "john"));
-        then(oKeyWords).isEqualTo(Arrays.asList("123john", "john"));
+        then(hKeyWords).isEqualTo(asList("123john", "john"));
+        then(cKeyWords).isEqualTo(asList("123john", "john"));
+        then(dKeyWords).isEqualTo(asList("123john", "john"));
+        then(oKeyWords).isEqualTo(asList("123john", "john"));
     }
 
     @Test
@@ -133,7 +145,7 @@ public class InputTextParserTest {
 
         then(resultStructure).hasSize(6);
         then(resultStructure.keySet()).containsSequence('d', 'e', 'h', 'j', 'n', 'o');
-        then(jWords).isEqualTo(Arrays.asList("j", "john"));
+        then(jWords).isEqualTo(asList("j", "john"));
     }
 
     @Test
@@ -161,18 +173,18 @@ public class InputTextParserTest {
         List<String> wWords = new ArrayList<>(resultStructure.get('w'));
 
         then(resultStructure.keySet()).containsSequence('a', 'd', 'e', 'i', 'j', 'k', 'l', 'm', 'o', 't', 'u', 'v', 'w');
-        then(aWords).isEqualTo(Arrays.asList("ala", "javie", "kota", "ma"));
-        then(dWords).isEqualTo(Arrays.asList("koduje"));
-        then(eWords).isEqualTo(Arrays.asList("javie", "koduje"));
-        then(iWords).isEqualTo(Arrays.asList("javie"));
-        then(jWords).isEqualTo(Arrays.asList("javie", "koduje"));
-        then(kWords).isEqualTo(Arrays.asList("koduje", "kot", "kota"));
-        then(lWords).isEqualTo(Arrays.asList("ala"));
-        then(mWords).isEqualTo(Arrays.asList("ma"));
-        then(oWords).isEqualTo(Arrays.asList("koduje", "kot", "kota"));
-        then(tWords).isEqualTo(Arrays.asList("kot", "kota"));
-        then(uWords).isEqualTo(Arrays.asList("koduje"));
-        then(vWords).isEqualTo(Arrays.asList("javie"));
-        then(wWords).isEqualTo(Arrays.asList("w"));
+        then(aWords).isEqualTo(asList("ala", "javie", "kota", "ma"));
+        then(dWords).isEqualTo(singletonList("koduje"));
+        then(eWords).isEqualTo(asList("javie", "koduje"));
+        then(iWords).isEqualTo(singletonList("javie"));
+        then(jWords).isEqualTo(asList("javie", "koduje"));
+        then(kWords).isEqualTo(asList("koduje", "kot", "kota"));
+        then(lWords).isEqualTo(singletonList("ala"));
+        then(mWords).isEqualTo(singletonList("ma"));
+        then(oWords).isEqualTo(asList("koduje", "kot", "kota"));
+        then(tWords).isEqualTo(asList("kot", "kota"));
+        then(uWords).isEqualTo(singletonList("koduje"));
+        then(vWords).isEqualTo(singletonList("javie"));
+        then(wWords).isEqualTo(singletonList("w"));
     }
 }

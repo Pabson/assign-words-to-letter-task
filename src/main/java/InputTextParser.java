@@ -7,13 +7,12 @@ import java.util.TreeSet;
 class InputTextParser {
     Map<Character, TreeSet<String>> mapWordsToLetters(String textToBeParsed) {
         if (textToBeParsed == null || textToBeParsed.isEmpty()) {
-            throw new IllegalArgumentException("Input text cannot be null or empty value");
+            throw new IllegalArgumentException("Input text cannot be empty");
         }
 
         Set<String> uniqueWords = splitTextIntoUniqueWords(textToBeParsed);
-        Map<Character, TreeSet<String>> wordsAssignedToLetter = assignWordsToLetters(uniqueWords);
 
-        return wordsAssignedToLetter;
+        return assignWordsToLetters(uniqueWords);
     }
 
     private Set<String> splitTextIntoUniqueWords(String textToBeParsed) {

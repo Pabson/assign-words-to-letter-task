@@ -11,7 +11,7 @@ class InputTextParser {
         }
 
         Set<String> uniqueWords = splitTextIntoUniqueWords(textToBeParsed);
-        Map<Character, TreeSet<String>> wordsAssignedToLetter = assignWordToLetter(uniqueWords);
+        Map<Character, TreeSet<String>> wordsAssignedToLetter = assignWordsToLetters(uniqueWords);
 
         return wordsAssignedToLetter;
     }
@@ -21,13 +21,13 @@ class InputTextParser {
         Set<String> uniqueWords = new HashSet<>();
 
         for (String word : allWordsFromText) {
-            int startIndex = 0;
+            int wordStartIndex = 0;
             for (int i = 0; i < word.length(); i++) {
                 if (!Character.isLetterOrDigit(word.charAt(i))) {
-                    uniqueWords.add(word.substring(startIndex, i).toLowerCase());
-                    startIndex = i + 1;
+                    uniqueWords.add(word.substring(wordStartIndex, i).toLowerCase());
+                    wordStartIndex = i + 1;
                 } else if (i == word.length() - 1) {
-                    uniqueWords.add(word.substring(startIndex, i + 1).toLowerCase());
+                    uniqueWords.add(word.substring(wordStartIndex, i + 1).toLowerCase());
                 }
             }
         }
@@ -35,22 +35,22 @@ class InputTextParser {
         return uniqueWords;
     }
 
-    private Map<Character, TreeSet<String>> assignWordToLetter(Set<String> uniqueWords) {
-        Map<Character, TreeSet<String>> wordsAssignedToLetter = new HashMap<>();
+    private Map<Character, TreeSet<String>> assignWordsToLetters(Set<String> uniqueWords) {
+        Map<Character, TreeSet<String>> wordsAssignedToLetters = new HashMap<>();
 
         for (String word : uniqueWords) {
             for (int i = 0; i < word.length(); i++) {
                 char sign = word.charAt(i);
                 if (Character.isLetter(sign)) {
-                    if (!wordsAssignedToLetter.containsKey(sign)) {
-                        wordsAssignedToLetter.put(sign, new TreeSet<>());
+                    if (!wordsAssignedToLetters.containsKey(sign)) {
+                        wordsAssignedToLetters.put(sign, new TreeSet<>());
                     }
 
-                    wordsAssignedToLetter.get(sign).add(word);
+                    wordsAssignedToLetters.get(sign).add(word);
                 }
             }
         }
 
-        return wordsAssignedToLetter;
+        return wordsAssignedToLetters;
     }
 }
